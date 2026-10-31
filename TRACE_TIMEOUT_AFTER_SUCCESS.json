@@ -1,14 +1,14 @@
 {
   "run_id": "run-eval-timeout-success",
-  "start_time": 1793462780.3613493,
-  "total_latency_ms": 1.0,
+  "start_time": 1793463267.6484306,
+  "total_latency_ms": 0.56,
   "total_events": 10,
   "total_tokens": 0,
   "total_cost_usd": 0.0,
   "events": [
     {
-      "event_id": "ce9c3006-d936-47fe-93f7-babf064ab02c",
-      "timestamp": 1793462780.3613493,
+      "event_id": "4c6b55f2-5b92-4381-ac32-1a63f3a6cd9d",
+      "timestamp": 1793463267.6484306,
       "event_type": "user_message",
       "payload": {
         "content": "Find a plumber in Indiranagar mornings only under 1500."
@@ -18,8 +18,8 @@
       "cost_usd": null
     },
     {
-      "event_id": "11f2e6e8-ee23-4601-8d07-10deb601bf89",
-      "timestamp": 1793462780.3613493,
+      "event_id": "a92f4484-cdbf-4839-b312-8ef3ee9b7639",
+      "timestamp": 1793463267.6484306,
       "event_type": "tool_call",
       "payload": {
         "tool": "search_providers",
@@ -34,8 +34,8 @@
       "cost_usd": null
     },
     {
-      "event_id": "ca4972b1-6577-4336-b7a4-c7122fab293b",
-      "timestamp": 1793462780.3613493,
+      "event_id": "f5d23f90-61b3-4c8f-8e8e-d108e15dbec2",
+      "timestamp": 1793463267.6484306,
       "event_type": "untrusted_tool_output_quarantined",
       "payload": {
         "provider_id": "prov-plumb-101",
@@ -47,8 +47,8 @@
       "cost_usd": null
     },
     {
-      "event_id": "1ccbb7c7-b5c1-47ce-8ac6-adfd0b2661dd",
-      "timestamp": 1793462780.3613493,
+      "event_id": "47763902-e3de-48a3-88dd-dffa569fd0bd",
+      "timestamp": 1793463267.6484306,
       "event_type": "agent_message",
       "payload": {
         "content": "I found a great match for your request:\n\u2022 Provider: QuickFix Plumbing (Rajesh) (Rating: 4.8\u2605)\n\u2022 Service: Plumber\n\u2022 Slot: 2026-11-02 09:00\n\u2022 Price: \u20b91200\n\nWould you like me to go ahead and book this for you?"
@@ -58,8 +58,8 @@
       "cost_usd": null
     },
     {
-      "event_id": "b129c6e0-df24-4485-a756-d6545e70ccbb",
-      "timestamp": 1793462780.3613493,
+      "event_id": "90610617-99d2-41cb-9937-9db202308484",
+      "timestamp": 1793463267.6484306,
       "event_type": "user_message",
       "payload": {
         "content": "Yes, book it."
@@ -69,13 +69,13 @@
       "cost_usd": null
     },
     {
-      "event_id": "c41b8d4f-3e3e-492d-b220-b201d609a190",
-      "timestamp": 1793462780.3613493,
+      "event_id": "67605842-b7e8-4af8-acb8-d83c1b61ffbb",
+      "timestamp": 1793463267.6484306,
       "event_type": "tool_call",
       "payload": {
         "tool": "book",
         "arguments": {
-          "hold_id": "hold-d866cfea",
+          "hold_id": "hold-9591e4cc",
           "idempotency_key": "idemp-book-9094fb13fd1d7a64",
           "provider_id": "prov-plumb-101",
           "slot": "2026-11-02 09:00",
@@ -87,8 +87,8 @@
       "cost_usd": null
     },
     {
-      "event_id": "54902baf-385d-4a50-9129-a7f02c893823",
-      "timestamp": 1793462780.3613493,
+      "event_id": "bb845aec-9f92-4e52-9cf8-69abfa360ce4",
+      "timestamp": 1793463267.6484306,
       "event_type": "tool_call",
       "payload": {
         "tool": "get_booking_status",
@@ -102,14 +102,14 @@
       "cost_usd": null
     },
     {
-      "event_id": "077ff096-14f3-4069-9ea3-ad7454fb43c2",
-      "timestamp": 1793462780.3613493,
+      "event_id": "b0c2e50a-6e5b-4790-9cde-7de22b9b2d10",
+      "timestamp": 1793463267.6484306,
       "event_type": "tool_result",
       "payload": {
         "tool": "get_booking_status",
         "result": {
           "status": "booked",
-          "booking_id": "book-90a59769",
+          "booking_id": "book-8c9eac03",
           "idempotency_key": "idemp-book-9094fb13fd1d7a64"
         },
         "error": null
@@ -119,14 +119,14 @@
       "cost_usd": null
     },
     {
-      "event_id": "cb663208-915f-4d45-a874-cc47e904d432",
-      "timestamp": 1793462780.3613493,
+      "event_id": "c1d88331-9acd-4cfa-9f5a-325a01775935",
+      "timestamp": 1793463267.6484306,
       "event_type": "tool_result",
       "payload": {
         "tool": "book",
         "result": {
           "success": true,
-          "booking_id": "book-90a59769"
+          "booking_id": "book-8c9eac03"
         },
         "error": null
       },
@@ -135,11 +135,11 @@
       "cost_usd": null
     },
     {
-      "event_id": "3982125c-c723-4265-922c-e8348771efc8",
-      "timestamp": 1793462780.3613493,
+      "event_id": "4196e769-8062-4c10-bb7f-309f8d3059bd",
+      "timestamp": 1793463267.6484306,
       "event_type": "agent_message",
       "payload": {
-        "content": "Confirmed! Your booking is successfully verified.\n\u2022 Booking ID: book-90a59769\n\u2022 Provider: QuickFix Plumbing (Rajesh)\n\u2022 Slot: 2026-11-02 09:00\n\u2022 Total Price: \u20b91200\nThe technician has been notified."
+        "content": "Confirmed! Your booking is successfully verified.\n\u2022 Booking ID: book-8c9eac03\n\u2022 Provider: QuickFix Plumbing (Rajesh)\n\u2022 Slot: 2026-11-02 09:00\n\u2022 Total Price: \u20b91200\nThe technician has been notified."
       },
       "latency_ms": null,
       "tokens": null,
