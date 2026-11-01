@@ -28,6 +28,11 @@ class ExecutionBudget:
         self.turns_count = 0
         self.tool_calls_count = 0
         self.start_time = time.time()
+        self.turn_start_time = time.time()
+
+    def start_turn(self) -> None:
+        """Reset the wall-clock timer for the current active processing turn."""
+        self.turn_start_time = time.time()
 
     def record_turn(self) -> None:
         self.turns_count += 1
@@ -38,7 +43,8 @@ class ExecutionBudget:
         self.check_limits()
 
     def check_limits(self) -> None:
-        elapsed = time.time() - self.start_time
+        # Measure active processing time of the current turn
+        elapsed = time.time() - self.turn_start_time
         if elapsed > self.max_wall_clock_seconds:
             raise LimitExhaustedError(
                 "wall_clock_time",

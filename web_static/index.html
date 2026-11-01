@@ -18,25 +18,29 @@
       --success: #22c55e;
       --warning: #f59e0b;
       --danger: #ef4444;
-      --tag-bg: #0f172a;
     }
     * { box-sizing: border-box; margin: 0; padding: 0; }
-    body {
+    html, body {
+      height: 100%;
+      height: 100vh;
+      overflow: hidden;
       font-family: 'Inter', -apple-system, sans-serif;
       background: var(--bg);
       color: var(--text);
+    }
+    body {
       display: flex;
       flex-direction: column;
-      height: 100vh;
-      overflow: hidden;
     }
     header {
       background: var(--card-bg);
       border-bottom: 1px solid var(--border);
-      padding: 12px 24px;
+      padding: 10px 20px;
       display: flex;
       align-items: center;
       justify-content: space-between;
+      flex-shrink: 0;
+      height: 52px;
     }
     .header-title {
       display: flex;
@@ -44,7 +48,7 @@
       gap: 12px;
     }
     .header-title h1 {
-      font-size: 1.15rem;
+      font-size: 1.1rem;
       font-weight: 700;
       letter-spacing: -0.02em;
     }
@@ -82,11 +86,17 @@
     .btn:hover { background: #334155; }
     .btn-primary { background: var(--accent); color: #0f172a; border-color: var(--accent); font-weight: 600; }
     .btn-primary:hover { background: var(--accent-hover); }
+    .btn-success { background: #15803d; color: white; border-color: #22c55e; font-weight: 600; }
+    .btn-success:hover { background: #16a34a; }
+    .btn-danger { background: #991b1b; color: white; border-color: #ef4444; font-weight: 600; }
+    .btn-danger:hover { background: #b91c1c; }
 
     .main-container {
       display: grid;
       grid-template-columns: 1fr 1fr;
       flex: 1;
+      min-height: 0;
+      height: calc(100vh - 52px);
       overflow: hidden;
     }
 
@@ -96,31 +106,36 @@
       display: flex;
       flex-direction: column;
       height: 100%;
+      min-height: 0;
       background: #111827;
+      overflow: hidden;
     }
     .chat-quick-bar {
-      padding: 10px 16px;
+      padding: 8px 16px;
       background: rgba(30, 41, 59, 0.6);
       border-bottom: 1px solid var(--border);
       display: flex;
       gap: 8px;
+      flex-shrink: 0;
       overflow-x: auto;
     }
     .chat-messages {
-      flex: 1;
-      padding: 20px;
+      flex: 1 1 0;
+      min-height: 0;
+      padding: 16px 20px;
       overflow-y: auto;
       display: flex;
       flex-direction: column;
-      gap: 16px;
+      gap: 14px;
     }
     .msg {
-      max-width: 82%;
+      max-width: 85%;
       padding: 12px 16px;
       border-radius: 10px;
       font-size: 0.9rem;
       line-height: 1.5;
       white-space: pre-wrap;
+      word-break: break-word;
     }
     .msg-user {
       align-self: flex-end;
@@ -134,12 +149,33 @@
       border: 1px solid var(--border);
       border-bottom-left-radius: 2px;
     }
+
+    /* Pending Action Quick Bar */
+    .pending-action-bar {
+      display: none;
+      background: rgba(245, 158, 11, 0.12);
+      border-top: 1px solid rgba(245, 158, 11, 0.4);
+      padding: 10px 16px;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      flex-shrink: 0;
+    }
+    .pending-action-text {
+      font-size: 0.85rem;
+      color: #fde68a;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+
     .chat-input-bar {
-      padding: 14px 20px;
+      padding: 12px 16px;
       background: var(--card-bg);
       border-top: 1px solid var(--border);
       display: flex;
       gap: 10px;
+      flex-shrink: 0;
     }
     .chat-input {
       flex: 1;
@@ -158,25 +194,27 @@
       display: flex;
       flex-direction: column;
       height: 100%;
+      min-height: 0;
       background: #0f172a;
       overflow-y: auto;
       padding: 16px 20px;
-      gap: 16px;
+      gap: 14px;
     }
     .card {
       background: var(--card-bg);
       border: 1px solid var(--border);
       border-radius: 8px;
-      padding: 14px 16px;
+      padding: 12px 16px;
+      flex-shrink: 0;
     }
     .card-header {
       display: flex;
       justify-content: space-between;
       align-items: center;
-      margin-bottom: 12px;
+      margin-bottom: 10px;
     }
     .card-title {
-      font-size: 0.85rem;
+      font-size: 0.82rem;
       font-weight: 600;
       text-transform: uppercase;
       letter-spacing: 0.05em;
@@ -193,27 +231,27 @@
     .stat-box {
       background: #0f172a;
       border: 1px solid var(--border);
-      padding: 10px;
+      padding: 8px 10px;
       border-radius: 6px;
     }
-    .stat-label { font-size: 0.72rem; color: var(--muted); margin-bottom: 4px; text-transform: uppercase; }
-    .stat-val { font-size: 0.9rem; font-weight: 600; font-family: 'JetBrains Mono', monospace; }
+    .stat-label { font-size: 0.7rem; color: var(--muted); margin-bottom: 2px; text-transform: uppercase; }
+    .stat-val { font-size: 0.88rem; font-weight: 600; font-family: 'JetBrains Mono', monospace; }
 
     /* Trace List */
     .trace-list {
       display: flex;
       flex-direction: column;
       gap: 8px;
-      max-height: 280px;
+      max-height: 250px;
       overflow-y: auto;
     }
     .trace-item {
       background: #0f172a;
       border: 1px solid var(--border);
       border-radius: 6px;
-      padding: 8px 12px;
+      padding: 8px 10px;
       font-family: 'JetBrains Mono', monospace;
-      font-size: 0.76rem;
+      font-size: 0.75rem;
     }
     .trace-top {
       display: flex;
@@ -227,11 +265,10 @@
     /* Code Approval Status */
     .approval-box {
       border: 1px solid var(--border);
-      border-radius: 8px;
-      padding: 12px;
+      border-radius: 6px;
+      padding: 10px 12px;
       background: #0f172a;
     }
-    .app-status { font-weight: 700; font-size: 0.95rem; }
   </style>
 </head>
 <body>
@@ -262,8 +299,19 @@
         <div class="msg msg-agent">Hello! I am your code-governed Errand Agent. I can help book, reschedule, or cancel home services (plumbers, electricians, AC servicing) with verified idempotency and code-enforced approval. What can I do for you today?</div>
       </div>
 
+      <!-- Quick Action Buttons for Code Approval -->
+      <div class="pending-action-bar" id="pendingActionBar">
+        <div class="pending-action-text">
+          <span>⚠️ <strong>Approval Required:</strong> Proceed with booking?</span>
+        </div>
+        <div style="display:flex; gap:8px;">
+          <button class="btn btn-success" onclick="sendCustom('Yes, please go ahead and book it.')">✓ Confirm & Book</button>
+          <button class="btn btn-danger" onclick="sendCustom('No, cancel this proposal.')">✗ Decline</button>
+        </div>
+      </div>
+
       <div class="chat-input-bar">
-        <input type="text" id="userInput" class="chat-input" placeholder="Type a message (e.g. 'Find a plumber in Indiranagar mornings only under 1500')..." onkeydown="if(event.key==='Enter') sendMessage()">
+        <input type="text" id="userInput" class="chat-input" placeholder="Type a message or click 'Confirm & Book' above..." onkeydown="if(event.key==='Enter') sendMessage()">
         <button class="btn btn-primary" onclick="sendMessage()">Send</button>
       </div>
     </div>
@@ -306,13 +354,13 @@
             <div class="stat-val" id="stateBudget">-</div>
           </div>
         </div>
-        <div style="margin-top: 10px; font-size: 0.8rem; color: var(--muted);">
+        <div style="margin-top: 8px; font-size: 0.8rem; color: var(--muted);">
           <span>Active Slot Hold: </span><span id="stateHold" style="color: var(--accent); font-family: monospace;">None</span>
         </div>
       </div>
 
       <!-- Live Execution Telemetry -->
-      <div class="card" style="flex: 1;">
+      <div class="card">
         <div class="card-header">
           <span class="card-title">Real-Time Execution Traces</span>
           <span class="badge badge-success">Zero Secrets</span>
@@ -359,7 +407,9 @@
       div.className = `msg msg-${sender}`;
       div.innerText = text;
       box.appendChild(div);
-      box.scrollTop = box.scrollHeight;
+      setTimeout(() => {
+        box.scrollTop = box.scrollHeight;
+      }, 50);
     }
 
     function updateDashboard(data) {
@@ -380,25 +430,31 @@
         missingBadge.innerText = 'Complete & Valid';
       }
 
-      // Update Approval
+      // Update Approval & Pending Banner
       const appBadge = document.getElementById('approvalBadge');
       const appBox = document.getElementById('approvalBox');
+      const pendingBar = document.getElementById('pendingActionBar');
       const app = data.approval;
+
       if (!app) {
         appBadge.className = 'badge badge-primary';
         appBadge.innerText = 'STATUS: NONE';
         appBox.innerHTML = '<div style="color: var(--muted); font-size: 0.85rem;">No active proposal pending user confirmation.</div>';
+        pendingBar.style.display = 'none';
       } else {
         if (app.status === 'approved') {
           appBadge.className = 'badge badge-success';
+          pendingBar.style.display = 'none';
         } else if (app.status === 'pending') {
           appBadge.className = 'badge badge-warning';
+          pendingBar.style.display = 'flex';
         } else if (app.status === 'void') {
           appBadge.className = 'badge badge-danger';
+          pendingBar.style.display = 'none';
         }
         appBadge.innerText = 'STATUS: ' + app.status.toUpperCase();
         appBox.innerHTML = `
-          <div style="display:flex; justify-content:space-between; margin-bottom:6px;">
+          <div style="display:flex; justify-content:space-between; margin-bottom:4px;">
             <span style="font-size:0.8rem; color:var(--muted);">Action: <strong style="color:white;">${app.action.toUpperCase()}</strong></span>
             <span style="font-size:0.8rem; color:var(--accent);">Price: ₹${app.price}</span>
           </div>
@@ -431,16 +487,11 @@
     async function runTrigger(type) {
       if (type === 'happy') {
         sendCustom('Find a plumber for my kitchen tap this week in Indiranagar, mornings only, under 1500.');
-        setTimeout(() => sendCustom('Yes, please go ahead and book it.'), 1200);
       } else if (type === 'injection') {
         sendCustom('Find a plumber in Indiranagar mornings only under 1500.');
       } else if (type === 'timeout') {
         document.getElementById('userInput').value = 'Find an electrician in Koramangala mornings only under 1000.';
         await sendMessage('timeout');
-        setTimeout(() => {
-          document.getElementById('userInput').value = 'Yes, confirm and book.';
-          sendMessage();
-        }, 1200);
       }
     }
 

@@ -55,6 +55,7 @@ class ErrandAgent:
     def handle_message(self, user_text: str) -> str:
         """Process a single turn of user conversation."""
         self.tracer.log_user_message(user_text)
+        self.budget.start_turn()
 
         try:
             self.budget.record_turn()
