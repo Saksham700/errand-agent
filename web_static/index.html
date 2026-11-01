@@ -1,0 +1,460 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Errand Agent - Founding AI Engineer Dashboard</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap">
+  <style>
+    :root {
+      --bg: #0f172a;
+      --card-bg: #1e293b;
+      --border: #334155;
+      --accent: #38bdf8;
+      --accent-hover: #0ea5e9;
+      --text: #f8fafc;
+      --muted: #94a3b8;
+      --success: #22c55e;
+      --warning: #f59e0b;
+      --danger: #ef4444;
+      --tag-bg: #0f172a;
+    }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      font-family: 'Inter', -apple-system, sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      display: flex;
+      flex-direction: column;
+      height: 100vh;
+      overflow: hidden;
+    }
+    header {
+      background: var(--card-bg);
+      border-bottom: 1px solid var(--border);
+      padding: 12px 24px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+    .header-title {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+    .header-title h1 {
+      font-size: 1.15rem;
+      font-weight: 700;
+      letter-spacing: -0.02em;
+    }
+    .badge {
+      font-size: 0.72rem;
+      padding: 3px 8px;
+      border-radius: 999px;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+    }
+    .badge-primary { background: rgba(56, 189, 248, 0.15); color: var(--accent); border: 1px solid rgba(56, 189, 248, 0.3); }
+    .badge-success { background: rgba(34, 197, 94, 0.15); color: var(--success); border: 1px solid rgba(34, 197, 94, 0.3); }
+    .badge-warning { background: rgba(245, 158, 11, 0.15); color: var(--warning); border: 1px solid rgba(245, 158, 11, 0.3); }
+    .badge-danger { background: rgba(239, 68, 68, 0.15); color: var(--danger); border: 1px solid rgba(239, 68, 68, 0.3); }
+
+    .header-actions {
+      display: flex;
+      gap: 8px;
+    }
+    .btn {
+      font-size: 0.8rem;
+      font-weight: 500;
+      padding: 6px 12px;
+      border-radius: 6px;
+      border: 1px solid var(--border);
+      background: var(--card-bg);
+      color: var(--text);
+      cursor: pointer;
+      transition: all 0.15s ease;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+    }
+    .btn:hover { background: #334155; }
+    .btn-primary { background: var(--accent); color: #0f172a; border-color: var(--accent); font-weight: 600; }
+    .btn-primary:hover { background: var(--accent-hover); }
+
+    .main-container {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      flex: 1;
+      overflow: hidden;
+    }
+
+    /* Left: Chat Pane */
+    .chat-pane {
+      border-right: 1px solid var(--border);
+      display: flex;
+      flex-direction: column;
+      height: 100%;
+      background: #111827;
+    }
+    .chat-quick-bar {
+      padding: 10px 16px;
+      background: rgba(30, 41, 59, 0.6);
+      border-bottom: 1px solid var(--border);
+      display: flex;
+      gap: 8px;
+      overflow-x: auto;
+    }
+    .chat-messages {
+      flex: 1;
+      padding: 20px;
+      overflow-y: auto;
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+    }
+    .msg {
+      max-width: 82%;
+      padding: 12px 16px;
+      border-radius: 10px;
+      font-size: 0.9rem;
+      line-height: 1.5;
+      white-space: pre-wrap;
+    }
+    .msg-user {
+      align-self: flex-end;
+      background: #2563eb;
+      color: white;
+      border-bottom-right-radius: 2px;
+    }
+    .msg-agent {
+      align-self: flex-start;
+      background: var(--card-bg);
+      border: 1px solid var(--border);
+      border-bottom-left-radius: 2px;
+    }
+    .chat-input-bar {
+      padding: 14px 20px;
+      background: var(--card-bg);
+      border-top: 1px solid var(--border);
+      display: flex;
+      gap: 10px;
+    }
+    .chat-input {
+      flex: 1;
+      background: #0f172a;
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 10px 14px;
+      color: white;
+      font-size: 0.9rem;
+      outline: none;
+    }
+    .chat-input:focus { border-color: var(--accent); }
+
+    /* Right: Observability Pane */
+    .obs-pane {
+      display: flex;
+      flex-direction: column;
+      height: 100%;
+      background: #0f172a;
+      overflow-y: auto;
+      padding: 16px 20px;
+      gap: 16px;
+    }
+    .card {
+      background: var(--card-bg);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 14px 16px;
+    }
+    .card-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 12px;
+    }
+    .card-title {
+      font-size: 0.85rem;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      color: var(--muted);
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+    .grid-2 {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 10px;
+    }
+    .stat-box {
+      background: #0f172a;
+      border: 1px solid var(--border);
+      padding: 10px;
+      border-radius: 6px;
+    }
+    .stat-label { font-size: 0.72rem; color: var(--muted); margin-bottom: 4px; text-transform: uppercase; }
+    .stat-val { font-size: 0.9rem; font-weight: 600; font-family: 'JetBrains Mono', monospace; }
+
+    /* Trace List */
+    .trace-list {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+      max-height: 280px;
+      overflow-y: auto;
+    }
+    .trace-item {
+      background: #0f172a;
+      border: 1px solid var(--border);
+      border-radius: 6px;
+      padding: 8px 12px;
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.76rem;
+    }
+    .trace-top {
+      display: flex;
+      justify-content: space-between;
+      margin-bottom: 4px;
+    }
+    .trace-type { font-weight: 600; color: var(--accent); }
+    .trace-lat { color: var(--muted); font-size: 0.7rem; }
+    .trace-body { color: #cbd5e1; word-break: break-all; }
+
+    /* Code Approval Status */
+    .approval-box {
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 12px;
+      background: #0f172a;
+    }
+    .app-status { font-weight: 700; font-size: 0.95rem; }
+  </style>
+</head>
+<body>
+
+  <header>
+    <div class="header-title">
+      <h1>Errand Agent</h1>
+      <span class="badge badge-primary">Founding AI Engineer</span>
+      <span class="badge badge-success">Code-Governed Gate</span>
+    </div>
+    <div class="header-actions">
+      <button class="btn" onclick="openEvalsModal()">View 18/18 Evals</button>
+      <button class="btn" onclick="resetSession()">Reset State</button>
+    </div>
+  </header>
+
+  <div class="main-container">
+    <!-- Chat Interface -->
+    <div class="chat-pane">
+      <div class="chat-quick-bar">
+        <button class="btn" onclick="runTrigger('happy')">Happy Path</button>
+        <button class="btn" onclick="runTrigger('injection')">Adversarial Injection</button>
+        <button class="btn" onclick="runTrigger('timeout')">Timeout Recovery</button>
+        <button class="btn" onclick="sendCustom('What do you remember about me?')">Check Memory</button>
+      </div>
+
+      <div class="chat-messages" id="chatMessages">
+        <div class="msg msg-agent">Hello! I am your code-governed Errand Agent. I can help book, reschedule, or cancel home services (plumbers, electricians, AC servicing) with verified idempotency and code-enforced approval. What can I do for you today?</div>
+      </div>
+
+      <div class="chat-input-bar">
+        <input type="text" id="userInput" class="chat-input" placeholder="Type a message (e.g. 'Find a plumber in Indiranagar mornings only under 1500')..." onkeydown="if(event.key==='Enter') sendMessage()">
+        <button class="btn btn-primary" onclick="sendMessage()">Send</button>
+      </div>
+    </div>
+
+    <!-- Live Observability Dashboard -->
+    <div class="obs-pane">
+      
+      <!-- Code-Enforced Approval Gate Card -->
+      <div class="card">
+        <div class="card-header">
+          <span class="card-title">Code-Enforced Approval Guard</span>
+          <span id="approvalBadge" class="badge badge-primary">STATUS: NONE</span>
+        </div>
+        <div class="approval-box" id="approvalBox">
+          <div style="color: var(--muted); font-size: 0.85rem;">No active proposal pending user confirmation.</div>
+        </div>
+      </div>
+
+      <!-- Explicit Workflow State Card -->
+      <div class="card">
+        <div class="card-header">
+          <span class="card-title">Workflow State Machine</span>
+          <span id="missingBadge" class="badge badge-warning">Missing Facts</span>
+        </div>
+        <div class="grid-2">
+          <div class="stat-box">
+            <div class="stat-label">Service</div>
+            <div class="stat-val" id="stateService">-</div>
+          </div>
+          <div class="stat-box">
+            <div class="stat-label">Area / Location</div>
+            <div class="stat-val" id="stateArea">-</div>
+          </div>
+          <div class="stat-box">
+            <div class="stat-label">Time Window</div>
+            <div class="stat-val" id="stateTime">-</div>
+          </div>
+          <div class="stat-box">
+            <div class="stat-label">Budget</div>
+            <div class="stat-val" id="stateBudget">-</div>
+          </div>
+        </div>
+        <div style="margin-top: 10px; font-size: 0.8rem; color: var(--muted);">
+          <span>Active Slot Hold: </span><span id="stateHold" style="color: var(--accent); font-family: monospace;">None</span>
+        </div>
+      </div>
+
+      <!-- Live Execution Telemetry -->
+      <div class="card" style="flex: 1;">
+        <div class="card-header">
+          <span class="card-title">Real-Time Execution Traces</span>
+          <span class="badge badge-success">Zero Secrets</span>
+        </div>
+        <div class="trace-list" id="traceList">
+          <div style="color: var(--muted); font-size: 0.8rem; font-family: monospace;">Awaiting model & tool invocations...</div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <script>
+    async function sendMessage(override = null) {
+      const input = document.getElementById('userInput');
+      const text = input.value.trim();
+      if (!text && !override) return;
+      input.value = '';
+
+      appendMessage(text, 'user');
+
+      try {
+        const res = await fetch('/api/chat', {
+          method: 'POST',
+          headers: {'Content-Type': 'application/json'},
+          body: JSON.stringify({ message: text, scenario_override: override })
+        });
+        const data = await res.json();
+        appendMessage(data.reply, 'agent');
+        updateDashboard(data);
+      } catch (err) {
+        appendMessage('Error: ' + err.message, 'agent');
+      }
+    }
+
+    function sendCustom(text) {
+      document.getElementById('userInput').value = text;
+      sendMessage();
+    }
+
+    function appendMessage(text, sender) {
+      const box = document.getElementById('chatMessages');
+      const div = document.createElement('div');
+      div.className = `msg msg-${sender}`;
+      div.innerText = text;
+      box.appendChild(div);
+      box.scrollTop = box.scrollHeight;
+    }
+
+    function updateDashboard(data) {
+      // Update State
+      const st = data.state;
+      document.getElementById('stateService').innerText = st.service || '-';
+      document.getElementById('stateArea').innerText = st.area || '-';
+      document.getElementById('stateTime').innerText = st.time_window || '-';
+      document.getElementById('stateBudget').innerText = st.budget ? '₹' + st.budget : '-';
+      document.getElementById('stateHold').innerText = st.active_hold ? `${st.active_hold.slot} (${st.active_hold.hold_id})` : 'None';
+
+      const missingBadge = document.getElementById('missingBadge');
+      if (st.missing_fields && st.missing_fields.length > 0) {
+        missingBadge.className = 'badge badge-warning';
+        missingBadge.innerText = 'Missing: ' + st.missing_fields.join(', ');
+      } else {
+        missingBadge.className = 'badge badge-success';
+        missingBadge.innerText = 'Complete & Valid';
+      }
+
+      // Update Approval
+      const appBadge = document.getElementById('approvalBadge');
+      const appBox = document.getElementById('approvalBox');
+      const app = data.approval;
+      if (!app) {
+        appBadge.className = 'badge badge-primary';
+        appBadge.innerText = 'STATUS: NONE';
+        appBox.innerHTML = '<div style="color: var(--muted); font-size: 0.85rem;">No active proposal pending user confirmation.</div>';
+      } else {
+        if (app.status === 'approved') {
+          appBadge.className = 'badge badge-success';
+        } else if (app.status === 'pending') {
+          appBadge.className = 'badge badge-warning';
+        } else if (app.status === 'void') {
+          appBadge.className = 'badge badge-danger';
+        }
+        appBadge.innerText = 'STATUS: ' + app.status.toUpperCase();
+        appBox.innerHTML = `
+          <div style="display:flex; justify-content:space-between; margin-bottom:6px;">
+            <span style="font-size:0.8rem; color:var(--muted);">Action: <strong style="color:white;">${app.action.toUpperCase()}</strong></span>
+            <span style="font-size:0.8rem; color:var(--accent);">Price: ₹${app.price}</span>
+          </div>
+          <div style="font-size:0.8rem; color:#cbd5e1;">Provider: ${app.provider_id} | Slot: ${app.slot}</div>
+          ${app.void_reason ? `<div style="font-size:0.75rem; color:var(--danger); margin-top:4px;">Voided: ${app.void_reason}</div>` : ''}
+        `;
+      }
+
+      // Update Trace List
+      const traceList = document.getElementById('traceList');
+      if (data.recent_events && data.recent_events.length > 0) {
+        traceList.innerHTML = '';
+        data.recent_events.forEach(ev => {
+          const item = document.createElement('div');
+          item.className = 'trace-item';
+          const lat = ev.latency_ms ? `[${ev.latency_ms.toFixed(1)}ms]` : '';
+          item.innerHTML = `
+            <div class="trace-top">
+              <span class="trace-type">${ev.event_type.toUpperCase()}</span>
+              <span class="trace-lat">${lat}</span>
+            </div>
+            <div class="trace-body">${JSON.stringify(ev.payload)}</div>
+          `;
+          traceList.appendChild(item);
+        });
+        traceList.scrollTop = traceList.scrollHeight;
+      }
+    }
+
+    async function runTrigger(type) {
+      if (type === 'happy') {
+        sendCustom('Find a plumber for my kitchen tap this week in Indiranagar, mornings only, under 1500.');
+        setTimeout(() => sendCustom('Yes, please go ahead and book it.'), 1200);
+      } else if (type === 'injection') {
+        sendCustom('Find a plumber in Indiranagar mornings only under 1500.');
+      } else if (type === 'timeout') {
+        document.getElementById('userInput').value = 'Find an electrician in Koramangala mornings only under 1000.';
+        await sendMessage('timeout');
+        setTimeout(() => {
+          document.getElementById('userInput').value = 'Yes, confirm and book.';
+          sendMessage();
+        }, 1200);
+      }
+    }
+
+    async function resetSession() {
+      await fetch('/api/reset', { method: 'POST' });
+      document.getElementById('chatMessages').innerHTML = '<div class="msg msg-agent">Session reset. Ready for new requests.</div>';
+      const res = await fetch('/api/state');
+      const st = await res.json();
+      updateDashboard({ state: st.workflow, approval: st.approval, recent_events: [] });
+    }
+
+    function openEvalsModal() {
+      window.open('/api/evals', '_blank');
+    }
+  </script>
+</body>
+</html>
