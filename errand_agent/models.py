@@ -1,9 +1,9 @@
 from __future__ import annotations
-from dataclasses import dataclass, field
 from enum import Enum
 from typing import Any, Dict, List, Optional
 import time
 import uuid
+from pydantic import BaseModel, Field, ConfigDict
 
 class ApprovalStatus(str, Enum):
     NONE = "none"
@@ -16,28 +16,28 @@ class MemorySource(str, Enum):
     STATED = "stated"
     INFERRED = "inferred"
 
-@dataclass
-class Provider:
+class Provider(BaseModel):
+    model_config = ConfigDict(extra="ignore")
     id: str
     name: str
     service: str
     area: str
     price: int
     rating: float
-    free_slots: List[str]
-    attributes: Dict[str, Any] = field(default_factory=dict)
-    reviews: List[str] = field(default_factory=list)
+    free_slots: List[str] = Field(default_factory=list)
+    attributes: Dict[str, Any] = Field(default_factory=dict)
+    reviews: List[str] = Field(default_factory=list)
 
-@dataclass
-class HoldSlotResult:
+class HoldSlotResult(BaseModel):
+    model_config = ConfigDict(extra="ignore")
     hold_id: str
     provider_id: str
     slot: str
     quoted_price: int
     expires_at: float  # unix epoch in seconds
 
-@dataclass
-class Booking:
+class Booking(BaseModel):
+    model_config = ConfigDict(extra="ignore")
     id: str
     user_id: str
     provider_id: str
@@ -47,17 +47,17 @@ class Booking:
     price: int
     status: str  # "confirmed", "cancelled", "rescheduled"
     idempotency_key: str
-    created_at: float = field(default_factory=time.time)
+    created_at: float = Field(default_factory=time.time)
 
-@dataclass
-class ApprovalRecord:
+class ApprovalRecord(BaseModel):
+    model_config = ConfigDict(extra="ignore")
     action: str  # "book", "cancel", "reschedule"
     provider_id: str
     slot: str
     price: int
     booking_id: Optional[str] = None
     status: ApprovalStatus = ApprovalStatus.PENDING
-    created_at: float = field(default_factory=time.time)
+    created_at: float = Field(default_factory=time.time)
     confirmed_at: Optional[float] = None
     void_reason: Optional[str] = None
 
@@ -80,15 +80,15 @@ class ApprovalRecord:
         self.status = ApprovalStatus.VOID
         self.void_reason = reason
 
-@dataclass
-class WorkflowState:
+class WorkflowState(BaseModel):
+    model_config = ConfigDict(extra="ignore")
     user_id: str
     service: Optional[str] = None
     area: Optional[str] = None
     date_range: Optional[str] = None
     time_window: Optional[str] = None
     budget: Optional[int] = None
-    preferences: Dict[str, Any] = field(default_factory=dict)
+    preferences: Dict[str, Any] = Field(default_factory=dict)
     active_hold: Optional[HoldSlotResult] = None
     target_booking_id: Optional[str] = None  # for cancel / reschedule
     active_action: Optional[str] = None      # "book", "cancel", "reschedule"
@@ -113,20 +113,20 @@ class WorkflowState:
             if hasattr(self, k) and v is not None:
                 setattr(self, k, v)
 
-@dataclass
-class MemoryFact:
+class MemoryFact(BaseModel):
+    model_config = ConfigDict(extra="ignore")
     key: str
     value: Any
     source: MemorySource
     confirmed_by_user: bool = False
-    updated_at: float = field(default_factory=time.time)
+    updated_at: float = Field(default_factory=time.time)
 
-@dataclass
-class TraceEvent:
-    event_id: str = field(default_factory=lambda: str(uuid.uuid4()))
-    timestamp: float = field(default_factory=time.time)
+class TraceEvent(BaseModel):
+    model_config = ConfigDict(extra="ignore")
+    event_id: str = Field(default_factory=lambda: str(uuid.uuid4()))
+    timestamp: float = Field(default_factory=time.time)
     event_type: str = ""  # state_transition, model_call, tool_call, tool_result, approval, user_message, agent_message, limit_exhausted
-    payload: Dict[str, Any] = field(default_factory=dict)
+    payload: Dict[str, Any] = Field(default_factory=dict)
     latency_ms: Optional[float] = None
     tokens: Optional[Dict[str, int]] = None
     cost_usd: Optional[float] = None

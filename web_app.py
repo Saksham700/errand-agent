@@ -78,7 +78,7 @@ def chat(req: ChatRequest):
             "time_window": agent.workflow.state.time_window,
             "budget": agent.workflow.state.budget,
             "missing_fields": agent.workflow.get_missing_fields(),
-            "active_hold": agent.workflow.state.active_hold.__dict__ if agent.workflow.state.active_hold else None
+            "active_hold": agent.workflow.state.active_hold.model_dump() if agent.workflow.state.active_hold else None
         },
         "approval": approval_info,
         "recent_events": [
@@ -113,7 +113,7 @@ def get_state():
             "time_window": agent.workflow.state.time_window,
             "budget": agent.workflow.state.budget,
             "missing_fields": agent.workflow.get_missing_fields(),
-            "active_hold": agent.workflow.state.active_hold.__dict__ if agent.workflow.state.active_hold else None
+            "active_hold": agent.workflow.state.active_hold.model_dump() if agent.workflow.state.active_hold else None
         },
         "approval": approval_info,
         "memory": agent.memory.view_memory(),
